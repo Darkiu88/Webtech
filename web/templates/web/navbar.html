@@ -1,0 +1,57 @@
+<div class="navbar">
+    <ul class="nav-links">
+        <li><a href="{% url 'custom_case' %}">Personalizar PC</a></li>
+        <li><a href="/public/pages/pre_build.html">Computadoras Prearmadas</a></li>
+        <li><a href="/public/pages/Cus.html">Inicio</a></li>
+    </ul>
+</div>
+
+<style>
+/* Variables de colores */
+:root {
+    --fondo-principal: #0F172A; /* Azul oscuro */
+    --texto-principal: #00A85A; /* Verde neón */
+    --texto-secundario: #FFFFFF; /* Blanco */
+    --boton-hover: #00A85A; /* Verde más fuerte */
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--fondo-principal);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center; /* Centrar enlaces */
+    align-items: center;
+    border-bottom: 3px solid var(--texto-principal);
+}
+
+/* Contenedor de enlaces */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Enlaces */
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: var(--texto-secundario);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+}
+
+/* Efecto hover */
+.nav-links a:hover {
+    background-color: var(--boton-hover);
+    color: var(--texto-principal);
+}
+
+</style>

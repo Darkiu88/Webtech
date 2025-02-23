@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenTechPc</title>
+    {% load static %}
+    <!-- Corrección de la ruta estática para CSS -->
+    <link rel="stylesheet" href="{% static 'Css/index.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-container">
+            <!-- Imagen con ruta estática -->
+            <div class="hero-image">
+                <img loading="lazy" src="{% static 'img/71pRNmk7UBL (2).webp' %}" alt="Custom PC Build" />
+            </div>
+
+            <!-- Contenido con texto y botón -->
+            <div class="hero-content">
+                <h1 class="hero-title">¡Crea tu computadora a tu manera!</h1>
+                <p class="hero-description">
+                    Crea el gabinete perfecto con tu propio estilo. Elige componentes,
+                    personaliza el diseño y recibe un producto único para ti.
+                </p>
+                <div class="Button-asa">
+                    <!-- Corrección de la URL para redirigir al archivo Cus.html -->
+                    <a href="{% url 'cus_view' %}">
+                        <button class="hero-button">Empieza a personalizar</button>
+                    </a>                    
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

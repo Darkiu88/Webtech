@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %} <!-- Asegura que Django pueda usar archivos estáticos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizar</title>
+    <link rel="stylesheet" href="{% static 'Css/Cus.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="{% static 'js/navbar.js' %}"></script>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <header class="main-header">
+        <h1 class="title">¿Para qué necesitas tu Computadora?</h1>
+        <p class="subtitle">Elige el uso que le quieras dar para recomendarte la mejor configuración</p>
+    </header>
+    <section class="option">
+        <a href="{% url 'custom_case' %}" class="option-button">Personalizar PC</a>
+        <a href="{% url 'pre_build_gaming' %}" class="option-button">Gaming</a>
+        <a href="{% url 'pre_build_escuela' %}" class="option-button">Escuela</a>
+        <a href="{% url 'pre_build_trabajo' %}" class="option-button">Trabajo</a>
+    </section>
+
+    <div class="action-section">
+        <h2 class="section-title">¿Cómo quieres tu computadora?</h2>
+        <p class="section-descripcion">Escoge si prefieres personalizar cada detalle de tu computadora o comprar una configuración prearmada por expertos.</p>
+        <div class="custom-buttons">
+            <a href="{% url 'custom_case' %}" class="custom-button">Personaliza tu computadora</a>
+            <a href="{% url 'pre_build_gaming' %}" class="custom-button-prebuild">Comprar una opción prearmada</a>
+        </div>
+    </div>
+</body>
+
+</html>

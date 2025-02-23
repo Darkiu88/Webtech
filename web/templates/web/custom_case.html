@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalizacion de gabinetes</title>
+    <link rel="stylesheet" href="/Css/custom_case.Css">
+
+    <script src="/public/js/navbar.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <h1 class="title">Crea tu propio gabiente personalizado!</h1>
+    <form id="custom-form" method="post" data-netlify="true">
+        <label for="hero-description">Escribe tu correo electronico</label>
+        <input type="email" required name="email">
+
+        <label for="description">Describe tu gabinete de ideal</label>
+        <textarea name="" rows="4" required ></textarea>
+        <button type="submit">Enviar solisitud</button>
+    </form>
+    <div id="recomendation"></div>
+
+    <script>
+        document.getElementById('custom-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const description = document.getElementById('description').value;
+
+            const response = await fetch('/netlify/functions/chatgpt',{
+                method: 'POST',
+                body: JSON.stringify({description }),
+                headers: { 'content-type' : 'application/json'}
+            });
+
+            const data = await response.json();
+            document.getElementById('recommendation').innerHTML = `<p>${data.recommendation}</p>`;
+        });
+    </script>
+</body>
+</html>
