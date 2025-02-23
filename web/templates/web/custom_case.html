@@ -1,14 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalizacion de gabinetes</title>
-    <link rel="stylesheet" href="/Css/custom_case.Css">
+    <link rel="stylesheet" href="{% static 'Css/custom_case.css' %}">
 
     <script src="/public/js/navbar.js"></script>
 </head>
 <body>
+    {% include 'navbar.html' %}
     <div id="navbar-container"></div>
     <h1 class="title">Crea tu propio gabiente personalizado!</h1>
     <form id="custom-form" method="post" data-netlify="true">

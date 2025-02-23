@@ -1,8 +1,10 @@
+{% load static %}
+
 <div class="navbar">
     <ul class="nav-links">
         <li><a href="{% url 'custom_case' %}">Personalizar PC</a></li>
-        <li><a href="/public/pages/pre_build.html">Computadoras Prearmadas</a></li>
-        <li><a href="/public/pages/Cus.html">Inicio</a></li>
+        <li><a href="{% url 'pre_build' %}">Computadoras Prearmadas</a></li>
+        <li><a href="{% url 'cus_view' %}">Inicio</a></li>
     </ul>
 </div>
 
@@ -53,5 +55,4 @@
     background-color: var(--boton-hover);
     color: var(--texto-principal);
 }
-
 </style>

@@ -9,4 +9,6 @@ urlpatterns = [
     path('pre-build-gaming/', views.pre_build_gaming, name='pre_build_gaming'),
     path('pre-build-escuela/', views.pre_build_escuela, name='pre_build_escuela'),
     path('pre-build-trabajo/', views.pre_build_trabajo, name='pre_build_trabajo'),
+    path('navbar/', views.navbar_view, name='navbar'),
+
 ]

@@ -1,26 +1,70 @@
+{%  load static %}
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>custom para la escuela</title>
     <script src="/public/js/navbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
+
 </head>
+
 <body>
     <div id="navbar-container"></div>
     <header>
-    <H1>Ordenador</H1>
-    <p>Este  diseño esta especialisado en computadoras preparadas para la escuela si estas buscando una computadora para la esucuela esta es la mejor opcion</p>
-    
-</header>
-<section>
-<Button>Detalles</Button>
-<div class="informacion" id="informacion">
+        <H1>Computadora para Estudiantes Versátil y Equilibrada</H1>
+        <p>Esta computadora está diseñada para adaptarse a todas las carreras, ofreciendo un rendimiento equilibrado sin
+            enfocarse en una especialidad en particular. Es lo suficientemente potente para tareas de oficina,
+            navegación web, programación, diseño básico y consumo multimedia, asegurando fluidez en el uso de múltiples
+            aplicaciones a la vez.
+        </p>
 
-</div>
-</section>
-<script>
+    </header>
+    <section>
+        <Button onclick="">Detalles</Button>
+        <div class="informacion" id="informacion" style="display: none;">
+            <h2>Vista 3d del gabinete</h2>
+            <div id="stl-container"></div>
+        </div>
+    </section>
 
-</script>
+    <script>
+        function mostrarDetalles() {
+            document.getElementById("informacion").style.display = "block";
+            iniciarVisor();
+        }
+
+        function iniciarVisor() {
+            const scene = new THREE.scene();
+            const camera = new THREE.PerspectiveCamara(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth * 0.8, window.innerWidth * 0.6);
+            document.getElementById("stl-container").appendChild(renderer.domElement);
+
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+
+            const loader = new THREE.STLLoader();
+            loader.load("{% static 'models/gabinete_escolar.stl' %}", function (geometry) {
+                const material = new THREE.MeshStandardMaterial({ color: 0x00a85a });
+                const mesh = new THREE.mesh(geometry, material);
+                scane.add(mesh);
+                mesh.rotation.x = -0.5 * math.PI;
+                mesh.position.set(0, -50, 0);
+            });
+            camera.position.z = 200;
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate
+        }
+    </script>
 </body>
+
 </html>

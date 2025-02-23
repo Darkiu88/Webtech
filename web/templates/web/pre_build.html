@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Builder</title>
-    <script src="/public/js/navbar.js"></script>
+    <script src="{% static 'js/navbar.js%'}"></script>
 </head>
 <body>
+    {% include 'web/navbar.html'%}
+
     <div id="navbar-container"></div>
     <div>
         <h1>Compra tu computadora armada</h1>
-        <p>De momento solo tenemos 3 computadoras pero con el timepo vmos a incrementar nuestro inventario</p>
+        <p>De momento solo tenemos 3 computadoras pero con el timepo vamos a incrementar nuestro inventario</p>
     </div>
     <section>
         ordenad
