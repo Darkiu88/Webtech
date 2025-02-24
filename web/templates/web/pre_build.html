@@ -5,20 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Builder</title>
     <script src="{% static 'js/navbar.js%'}"></script>
+    <style>
+        :root {
+    --primary-color: #00a85a;
+    --secondary-color: #71787e;
+    --background-color: #0F172A;
+    --text-color: #ffffff;
+    --highlight-color: #ca7f45;
+    --font-primary: 'Roboto', sans-serif;
+    --font-title: 'Rog Fonts';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Contenedor principal */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para títulos */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-title);
+    color: var(--primary-color);
+}
+
+/* Botones generales */
+.button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    text-align: center;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #007b4a;
+}
+
+/* Sección Hero */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.hero-title {
+    font-size: 50px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.hero-description {
+    margin-top: 20px;
+    font-size: 18px;
+    color: var(--secondary-color);
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 350px;
+}
+
+/* Navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+.navbar a:hover {
+    color: var(--primary-color);
+}
+
+/* Secciones generales */
+.section {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.section-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.section-description {
+    font-size: 16px;
+    color: #acabac;
+    margin-bottom: 30px;
+}
+
+/* Botones de opciones */
+.option {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 3%;
+}
+
+.option-button {
+    font-size: 20px;
+    padding: 15px 30px;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.option-button:hover {
+    background-color: #007b4a;
+}
+.carrito {
+    background-color: #007b4a;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .option {
+        flex-direction: column;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .option-button {
+        max-width: 500px;
+        width: 100%;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .section-title {
+        font-size: 35px;
+    }
+    
+    .section-description {
+        font-size: 15px;
+    }
+    
+}
+    </style>
 </head>
 <body>
     {% include 'web/navbar.html'%}
 
-    <div id="navbar-container"></div>
     <div>
         <h1>Compra tu computadora armada</h1>
-        <p>De momento solo tenemos 3 computadoras pero con el timepo vamos a incrementar nuestro inventario</p>
+        <p>Hasta el momento solo tenemos estas computadoras sin embargo estamos trabajando para seguir teniendo mas contenido</p>
     </div>
-    <section>
-        ordenad
+    <section class="Build_escolar">
+        <img src="" alt="">
+        <p>Ordenador Escolar</p>
+        <a href="{% url 'pre_build_escuela'%}" class="carrito"><button>Agrega al carrito</button></a>
     </section>
-    <section></section>
-    <section></section>
+    <section class="Build_gaming">
+        <img src="" alt="">
+        <p>Ordenador Gaming</p>
+        <a href='{% url "pre_build_gaming"%}' class="carrito"><button>Agrega al carrito</button></a>
+    </section>
+    <section class="Build_trabajo">
+        <img src="" alt="">
+        <p>Ordenador para Trabajo</p>
+        <a href="{% url 'pre_build_trabajo'%}" class="carrito"><button>Agrega al carrito</button></a>
+    </section>
 
 
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse , JsonResponse
+from .models import CustomRequest
 from django.template.loader import render_to_string
 
 # Create your views here.
@@ -27,3 +28,16 @@ def pre_build_trabajo(request):
 
 def navbar_view(request):
     return render(request, 'web/navbar.html')
+
+def custom_form_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        description = request.POST.get('description')
+
+        try: 
+            CustomRequest.objects.create(email=email, description=description)
+            return JsonResponse({"message": "Solicitud recibida correctamente. Gracias por tu interés."})
+        except Exception as e:
+            return JsonResponse({"message": f"Hubo un problema al guardar los datos: {str(e)}"})
+        
+    return render(request, 'web/custom_form.html')
