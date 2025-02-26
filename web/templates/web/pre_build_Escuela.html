@@ -198,141 +198,200 @@
         font-size: 15px;
       }
     }
-  </style>
+/* Botones para selección de color */
+</style>
+</head>
+
 </head>
 
 <body>
-  {% include 'web/navbar.html' %}
-  <div class="container">
-    <header>
-      <h1>Computadora para Estudiantes</h1>
-      <p>
-        Esta computadora está diseñada para adaptarse a todas las carreras, ofreciendo un rendimiento equilibrado sin
-        enfocarse en una especialidad en particular. Es lo suficientemente potente para tareas de oficina, navegación web,
-        programación, diseño básico y consumo multimedia.
-      </p>
-    </header>
+{% include 'web/navbar.html' %}
+<div class="container">
+<header>
+  <h1>Computadora para Estudiantes</h1>
+  <p>
+    Esta computadora está diseñada para adaptarse a todas las carreras, ofreciendo un rendimiento equilibrado sin
+    enfocarse en una especialidad en particular. Es lo suficientemente potente para tareas de oficina, navegación web,
+    programación, diseño básico y consumo multimedia.
+  </p>
+</header>
 
-    <section class="section">
-      <h2>Precio y Descuento</h2>
-      <p>Precio Original: <del>$10,000 MXN</del></p>
-      <p>Precio con Descuento (Reacondicionada): <strong>$7,500 MXN</strong></p>
-    </section>
+<section>
+  <h2>Precio y Descuento</h2>
+  <p>Precio Original: <del>$10,000 MXN</del></p>
+  <p>Precio con Descuento (Reacondicionada): <strong>$7,500 MXN</strong></p>
+</section>
 
-    <section class="section">
-      <h2>Opciones de Compra</h2>
-      <p>Envío: <strong>Gratis a todo México</strong></p>
-      <p>Pago: Tarjeta, PayPal, Transferencia</p>
-      <button class="button" onclick="agregarAlCarrito()">Agregar al Carrito</button>
-      <p>Productos en el carrito: <span id="carrito-contador">0</span></p>
-    </section>
+<section>
+  <h2>Opciones de Compra</h2>
+  <p>Envío: <strong>Gratis a todo México</strong></p>
+  <p>Pago: Tarjeta, PayPal, Transferencia</p>
+  <button class="button" onclick="agregarAlCarrito()">Agregar al Carrito</button>
+  <p>Productos en el carrito: <span id="carrito-contador">0</span></p>
+</section>
 
-    <section class="section">
-      <button class="button" onclick="mostrarDetalles()">Detalles</button>
-      <div class="informacion" id="informacion" style="display: none;">
-        <h2>Vista 3D del Gabinete</h2>
-        <div id="stl-container"></div>
-        <section id="componentes-recomendados">
-          <h2>Componentes Recomendados</h2>
-          <button class="boton" onclick="mostrarVersion('estandar')">Versión Estándar</button>
-          <button class="boton" onclick="mostrarVersion('economica')">Versión Económica</button>
-          <div id="componentes-lista"></div>
-        </section>
-      </div>
+<section>
+  <button class="button" onclick="mostrarDetalles()">Detalles</button>
+  <div class="informacion" id="informacion" style="display: none;">
+    <h2>Vista 3D del Gabinete</h2>
+    <div id="stl-container"></div>
+    <!-- Selector de colores: tres opciones por defecto -->
+    <div class="color-picker">
+      <p>Elige un color:</p>
+      <button style="background-color: #00a85a;" onclick="cambiarColor(0x00a85a)"></button>
+      <button style="background-color: #f9a825;" onclick="cambiarColor(0xf9a825)"></button>
+      <button style="background-color: #ca7f45;" onclick="cambiarColor(0xca7f45)"></button>
+    </div>
+    <!-- Sección de Componentes Recomendados (se mantiene igual) -->        
+    <section id="componentes-recomendados">
+      <h2>Componentes Recomendados</h2>
+      <button class="button" onclick="mostrarVersion('estandar')">Versión Estándar</button>
+      <button class="button" onclick="mostrarVersion('economica')">Versión Económica</button>
+      <div id="componentes-lista"></div>
     </section>
   </div>
+</section>
+</div>
 
-  <script>
-    // Carrito
-    let contadorCarrito = 0;
-    function agregarAlCarrito() {
-      contadorCarrito++;
-      document.getElementById("carrito-contador").innerText = contadorCarrito;
-    }
+<script>
+ import * as THREE from "three";
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-    // Mostrar detalles y cargar el visor STL
-    function mostrarDetalles() {
-      let info = document.getElementById("informacion");
-      if (info.style.display === "none" || info.style.display === "") {
-        info.style.display = "block";
-        iniciarVisor();
-      } else {
-        info.style.display = "none";
-      }
-    }
+function iniciarVisor() {
+  const container = document.getElementById("stl-container");
+  container.innerHTML = ""; // Limpia el contenedor
 
-    function iniciarVisor() {
-      const container = document.getElementById("stl-container");
-      container.innerHTML = ""; // Limpiar el contenedor
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x000000);
-      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.set(0, 50, 200);
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(renderer.domElement);
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.1;
-      controls.rotateSpeed = 0.5;
-      const light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(100, 100, 100);
-      scene.add(light);
-      const loader = new THREE.STLLoader();
-      const stlPath = "{% static 'models/gabinete_escolar.stl' %}";
-      loader.load(stlPath, function (geometry) {
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff99, wireframe: true });
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.scale.set(50, 50, 50);
-        mesh.position.set(0, -10, 0);
-        mesh.rotation.x = Math.PI / 2;
-        scene.add(mesh);
-      });
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      }
-      animate();
-    }
+  // Escena
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f0f0);
 
-    const componentes = {
-      estandar: [
-        { titulo: "Procesador (CPU)", descripcion: "AMD Ryzen 5 5600G o Intel Core i5-12400." },
-        { titulo: "Tarjeta Madre", descripcion: "B550 (AMD) o B660 (Intel), con soporte NVMe." },
-        { titulo: "Memoria RAM", descripcion: "16GB (2x8GB) DDR4 3200MHz." },
-        { titulo: "Almacenamiento", descripcion: "SSD NVMe 512GB + HDD 1TB." },
-        { titulo: "Gráficos", descripcion: "Integrados en el procesador." },
-        { titulo: "Fuente de Poder (PSU)", descripcion: "500W 80 Plus Bronze." },
-        { titulo: "Sistema de Refrigeración", descripcion: "Disipador stock." },
-        { titulo: "Conectividad", descripcion: "WiFi 6 y Bluetooth 5.0." }
-      ],
-      economica: [
-        { titulo: "Procesador (CPU)", descripcion: "AMD Ryzen 5 3400G o Intel Core i5-9400F (usado o reacondicionado)." },
-        { titulo: "Tarjeta Madre", descripcion: "B450 (AMD) o B360 (Intel), con soporte para SSD SATA." },
-        { titulo: "Memoria RAM", descripcion: "8GB (2x4GB) DDR4 2666MHz." },
-        { titulo: "Almacenamiento", descripcion: "SSD SATA de 256GB + HDD 500GB (usado o reacondicionado)." },
-        { titulo: "Gráficos", descripcion: "Integrados o una GPU GTX 1050 Ti usada." },
-        { titulo: "Fuente de Poder (PSU)", descripcion: "450W 80 Plus White (básica pero funcional)." },
-        { titulo: "Sistema de Refrigeración", descripcion: "Disipador stock (o uno genérico si el original no está disponible)." },
-        { titulo: "Conectividad", descripcion: "Solo Ethernet, WiFi y Bluetooth opcionales." }
-      ]
-    };
+  // Iluminación
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  scene.add(ambientLight);
 
-    function mostrarVersion(version) {
-      let lista = document.getElementById("componentes-lista");
-      lista.innerHTML = "";
-      componentes[version].forEach(componente => {
-        let div = document.createElement("div");
-        div.classList.add("componente");
-        div.innerHTML = `<h3>${componente.titulo}</h3><p>${componente.descripcion}</p>`;
-        lista.appendChild(div);
-      });
-    }
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  directionalLight.position.set(100, 150, 100);
+  directionalLight.castShadow = true;
+  scene.add(directionalLight);
 
-    // Inicializa con la versión estándar
-    mostrarVersion("estandar");
-  </script>
+  const pointLight = new THREE.PointLight(0xffffff, 1, 500);
+  pointLight.position.set(-100, 100, 100);
+  scene.add(pointLight);
+
+  // Dimensiones del contenedor
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  // Cámara
+  const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+  camera.position.set(0, 100, 300);
+
+  // Renderizador
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(width, height);
+  renderer.shadowMap.enabled = true; // Activa sombras
+  container.appendChild(renderer.domElement);
+
+  // Controles de órbita
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.rotateSpeed = 0.8;
+
+  // Carga del modelo STL
+  const loader = new STLLoader();
+  const stlPath = "{% static 'models/Case_ventilado.stl' %}";
+
+  loader.load(stlPath, function (geometry) {
+    const material = new THREE.MeshPhysicalMaterial({
+      color: 0xaaaaaa, // Color gris metálico
+      metalness: 0.8,
+      roughness: 0.2,
+      clearcoat: 0.3, // Simula un ligero recubrimiento brillante
+      reflectivity: 0.7,
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    // Ajuste de escala
+    let scaleFactor = width / 500;
+    mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    mesh.position.set(0, -20, 0);
+    mesh.rotation.x = -Math.PI / 2;
+
+    scene.add(mesh);
+  });
+
+  // Animación
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Ajuste de tamaño dinámico
+  window.addEventListener("resize", () => {
+    const newWidth = container.clientWidth;
+    const newHeight = container.clientHeight;
+    renderer.setSize(newWidth, newHeight);
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+  });
+}
+
+iniciarVisor();
+
+
+
+// Función para cambiar el color del modelo
+function cambiarColor(colorHex) {
+  if (meshMaterial) {
+    meshMaterial.color.setHex(colorHex);
+  }
+}
+
+// Componentes recomendados (opciones de versión)
+const componentes = {
+  estandar: [
+    { titulo: "Procesador (CPU)", descripcion: "AMD Ryzen 5 5600G o Intel Core i5-12400." },
+    { titulo: "Tarjeta Madre", descripcion: "B550 (AMD) o B660 (Intel), con soporte NVMe." },
+    { titulo: "Memoria RAM", descripcion: "16GB (2x8GB) DDR4 3200MHz." },
+    { titulo: "Almacenamiento", descripcion: "SSD NVMe 512GB + HDD 1TB." },
+    { titulo: "Gráficos", descripcion: "Integrados en el procesador." },
+    { titulo: "Fuente de Poder (PSU)", descripcion: "500W 80 Plus Bronze." },
+    { titulo: "Sistema de Refrigeración", descripcion: "Disipador stock." },
+    { titulo: "Conectividad", descripcion: "WiFi 6 y Bluetooth 5.0." }
+  ],
+  economica: [
+    { titulo: "Procesador (CPU)", descripcion: "AMD Ryzen 5 3400G o Intel Core i5-9400F (usado o reacondicionado)." },
+    { titulo: "Tarjeta Madre", descripcion: "B450 (AMD) o B360 (Intel), con soporte para SSD SATA." },
+    { titulo: "Memoria RAM", descripcion: "8GB (2x4GB) DDR4 2666MHz." },
+    { titulo: "Almacenamiento", descripcion: "SSD SATA de 256GB + HDD 500GB (usado o reacondicionado)." },
+    { titulo: "Gráficos", descripcion: "Integrados o una GPU GTX 1050 Ti usada." },
+    { titulo: "Fuente de Poder (PSU)", descripcion: "450W 80 Plus White (básica pero funcional)." },
+    { titulo: "Sistema de Refrigeración", descripcion: "Disipador stock (o uno genérico si el original no está disponible)." },
+    { titulo: "Conectividad", descripcion: "Solo Ethernet, WiFi y Bluetooth opcionales." }
+  ]
+};
+
+function mostrarVersion(version) {
+  let lista = document.getElementById("componentes-lista");
+  lista.innerHTML = "";
+  componentes[version].forEach(componente => {
+    let div = document.createElement("div");
+    div.classList.add("componente");
+    div.innerHTML = `<h3>${componente.titulo}</h3><p>${componente.descripcion}</p>`;
+    lista.appendChild(div);
+  });
+}
+
+// Inicializa la versión estándar por defecto
+mostrarVersion("estandar");
+</script>
 </body>
 
 </html>
