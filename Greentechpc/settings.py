@@ -16,18 +16,13 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p4r=+$6i1nq*o7o&s#-y5*_+n=5hd0u4s4t=-yw+i_a%od@65*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['webtech-pyvw.onrender.com']
-
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'webtech-pyvw.onrender.com').split(',')
 
 # Application definition
 
@@ -44,6 +39,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para servir archivos estáticos en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,21 +68,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Greentechpc.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database Configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Cambiado a PostgreSQL
+        'NAME': os.getenv('DB_NAME', 'nombre_bd'),
+        'USER': os.getenv('DB_USER', 'usuario_bd'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'contraseña_bd'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,10 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -114,17 +105,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'web/static',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
